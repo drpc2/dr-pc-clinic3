@@ -3,10 +3,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DrPC</title>
+    <title>DrPC - Professional Secure App</title>
     
     <style>
-        /* Global & Security Settings */
+        /* Security & Base Styles */
         * {
             -webkit-user-select: none;
             -moz-user-select: none;
@@ -43,7 +43,7 @@
         .copyright-text { font-size: 0.6rem; color: rgba(255,255,255,0.4); margin-top: 3px; font-weight: normal; }
 
         .profile-row { 
-            display: flex; align-items: center; gap: 131px; background: rgba(240, 255, 255, 0.95); 
+            display: flex; align-items: center; gap: 15px; background: rgba(240, 255, 255, 0.95); 
             padding: 12px; border-radius: 18px; width: 90%; margin: 15px auto; color: #1a5276;
         }
         .profile-img { width: 55px; height: 55px; border-radius: 50%; border: 2px solid #007fa3; }
@@ -66,18 +66,22 @@
         #details-page { display: none; padding: 15px; text-align: center; }
         .big-box { background: rgba(255, 255, 255, 0.95); color: #333; padding: 20px; border-radius: 20px; text-align: left; margin-top: 15px; }
         
-        .disease-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.9rem; }
-        .disease-table th, .disease-table td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        /* Lists & Tables */
+        .expert-list { list-style: none; padding: 0; margin: 10px 0; }
+        .expert-list li { margin-bottom: 8px; font-size: 0.95rem; display: flex; align-items: flex-start; gap: 8px; color: #222; }
+        
+        .disease-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.9rem; background: white; }
+        .disease-table th, .disease-table td { border: 1px solid #aaa; padding: 10px; text-align: left; color: #000 !important; font-weight: 500; }
         .disease-table th { background: #1a5276; color: white; }
 
+        /* Gallery */
         .photo-gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
         .photo-placeholder { background: #eee; height: 100px; border-radius: 10px; border: 1.5px dashed #ccc; display: flex; align-items: center; justify-content: center; color: #999; font-size: 0.7rem; }
 
+        /* Buttons */
         .back-btn { background: white; color: #1a5276; padding: 8px 20px; border-radius: 25px; cursor: pointer; border: none; font-weight: bold; margin-bottom: 10px; }
-        .whatsapp-btn { display: block; background: #25D366; color: white; padding: 16px; border-radius: 50px; text-decoration: none; margin: 20px auto; font-weight: bold; width: 85%; text-align: center; }
-        
-        .expert-list { list-style: none; padding: 0; }
-        .expert-list li { margin-bottom: 8px; font-size: 0.95rem; display: flex; align-items: flex-start; gap: 8px; }
+        .whatsapp-btn { display: block; background: #25D366; color: white; padding: 16px; border-radius: 50px; text-decoration: none; margin: 15px auto 10px auto; font-weight: bold; width: 90%; text-align: center; }
+        .map-btn { display: block; background: #4285F4; color: white; padding: 16px; border-radius: 50px; text-decoration: none; margin: 0 auto 20px auto; font-weight: bold; width: 90%; text-align: center; font-size: 0.9rem; }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -118,8 +122,8 @@
             <div class="info-box" onclick="goToDetails('हमारा पता', 'location')">
                 <div class="icon">📍</div><h2>हमारा पता</h2><h3>Location</h3>
             </div>
-            <div class="info-box" onclick="window.open('https://www.google.com/maps')">
-                <div class="icon">🗺️</div><h2>Direction</h2><h3>Navigate</h3>
+            <div class="info-box" onclick="goToDetails('पेशेंट रिव्यु', 'reviews')">
+                <div class="icon">🌟</div><h2>पेशेंट रिव्यु</h2><h3>Reviews</h3>
             </div>
         </div>
     </div>
@@ -130,7 +134,11 @@
         <div class="big-box" id="det-box">
             <div id="relatable-content">Details...</div>
         </div>
-        <a id="wa-link" href="#" target="_blank" class="whatsapp-btn">💬 व्हाट्सएप मैसेज भेजें</a>
+        
+        <div id="action-buttons">
+            <a id="wa-link" href="#" target="_blank" class="whatsapp-btn">💬 व्हाट्सएप मैसेज भेजें</a>
+            <a id="map-link" href="#" target="_blank" class="map-btn" style="display:none;">📍 Google Maps पर देखें</a>
+        </div>
     </div>
 
     <div class="news-footer">
@@ -153,24 +161,34 @@
         function askNameFollowUp() {
             let name = prompt("नमस्ते! कृपया अपना शुभ नाम लिखें:");
             if (name) {
-                let today = new Date().toLocaleDateString('hi-IN');
-                goToDetails('रजिस्टर्ड पेशेंट', 'followup', name, today);
+                goToDetails('रजिस्टर्ड पेशेंट', 'followup', name);
             }
         }
 
-        function goToDetails(title, type, pName = "", date = "") {
+        function goToDetails(title, type, pName = "") {
             document.getElementById('main-page').style.display = 'none';
             document.getElementById('details-page').style.display = 'block';
             document.getElementById('det-title').innerText = title;
             
             let contentArea = document.getElementById('relatable-content');
             let waLink = document.getElementById('wa-link');
+            let mapLink = document.getElementById('map-link');
+            
             let waNumber = "91XXXXXXXXXX"; // Apna number yahan dalein
+            let mapURL = "https://goo.gl/maps/YOUR_LINK_HERE"; // Apna Map Link yahan dalein
             let waMsg = "";
 
+            // Reset buttons display
+            mapLink.style.display = 'none';
+
             if (type === 'diagnosis') {
-                contentArea.innerHTML = `<p>डॉ. पी.सी. क्लिनिक में हम आधुनिक पैथोलॉजी टेस्ट और होम्योपैथिक सिद्धांतों की सहायता से बीमारी की जड़ तक पहुँचते हैं।</p><div class="photo-gallery"><div class="photo-placeholder">Photo 1</div><div class="photo-placeholder">Photo 2</div></div>`;
-                waMsg = "नमस्ते डॉक्टर, मैं इस रोग के उपचार के बारे में जानकारी चाहता हूँ।";
+                contentArea.innerHTML = `
+                    <ul class="expert-list">
+                        <li>🔍 <b>Modern Diagnosis:</b> आधुनिक पैथोलॉजी रिपोर्ट का विश्लेषण।</li>
+                        <li>🧬 <b>Root Cause:</b>बीमारी की जड़ तक पहुँचने की तकनीक।</li>
+                    </ul>
+                    <div class="photo-gallery"><div class="photo-placeholder">Lab View</div><div class="photo-placeholder">Tests</div></div>`;
+                waMsg = "नमस्ते डॉक्टर, मुझे सटीक जांच प्रक्रिया के बारे में जानकारी चाहिए।";
             } 
             else if (type === 'expert') {
                 contentArea.innerHTML = `
@@ -182,34 +200,53 @@
                         <li>🏥 <b>Ex-Government Medical Officer</b></li>
                         <li>⏳ <b>20 years of experiences</b></li>
                         <li>✨ <b>working on manufacturing medicines</b></li>
-                    </ul>`;
-                waMsg = "नमस्ते डॉक्टर, मुझे यह रोग (रोग का नाम) कई दिनों से है और मैं पूर्णतः स्वस्थ होना चाहता हूँ, कृपया इस रोग के उपचार के बारे में जानना चाहता हूँ ।";
+                    </ul>
+                    <div class="photo-gallery"><div class="photo-placeholder">Doctor Photo</div><div class="photo-placeholder">Degree Photo</div></div>`;
+                waMsg = "नमस्ते डॉक्टर, आपके अनुभव के बारे में जानकारी चाहिए।";
             }
             else if (type === 'fees') {
-                contentArea.innerHTML = `<p>उचित शुल्क में स्थायी उपचार और बेहतरीन स्वास्थ्य सेवाएं। शुल्क की विस्तृत जानकारी के लिए कृपया व्हाट्सएप पर संपर्क करें।</p>`;
-                waMsg = "नमस्ते डॉक्टर, मैं उपचार शुल्क और परामर्श फीस की जानकारी लेना चाहता हूँ।";
+                contentArea.innerHTML = `
+                    <table class="disease-table">
+                        <tr><th>सेवा</th><th>शुल्क</th></tr>
+                        <tr><td>परामर्श</td><td>First Visit</td></tr>
+                    </table>
+                    <div class="photo-gallery"><div class="photo-placeholder">Payment QR</div><div class="photo-placeholder">Fees Chart</div></div>`;
+                waMsg = "नमस्ते डॉक्टर, फीस और कोर्स शुल्क की जानकारी चाहिए।";
             }
             else if (type === 'chronic') {
-                contentArea.innerHTML = `<p><b>सम्पूर्ण रोग निवारण चिकित्सा</b></p><table class="disease-table"><tr><th>रोग का नाम</th><th>विवरण</th></tr><tr><th>गठिया</th><th>जोड़ों का पुराना दर्द</th></tr><tr><th>दमा</th><th>सांस की समस्या</th></tr><tr><th>चर्म रोग</th><th>एलर्जी और सोरायसिस</th></tr></table>`;
-                waMsg = "नमस्ते डॉक्टर, मुझे यह रोग (रोग का नाम) कई दिनों से है और मैं पूर्णतः स्वस्थ होना चाहता हूँ, कृपया इस रोग के उपचार के बारे में जानना चाहता हूँ ।।";
-            }
-            else if (type === 'followup') {
                 contentArea.innerHTML = `
-                    <p><b>फॉलो अप के लिए अपॉइंटमेंट की आसान सुविधा (मेसेज को सैंड करने के लिये व्हाट्सएप बटन पर क्लिक करे)</b></p><br>
-                    <p>नमस्ते डॉक्टर, मेरा नाम <b>${pName}</b> है, फॉलो अप के लिए दिनांक <b>${date}</b> का अपॉइंटमेंट दें।</p>
-                `;
-                waMsg = `नमस्ते डॉक्टर, मेरा नाम ${pName} है, फॉलो अप के लिए दिनांक ${date} का अपॉइंटमेंट दें।`;
-            } 
-            else if (type === 'appointment') {
-                contentArea.innerHTML = `<p><b>नया ट्रीटमेंट शुरू करने के लिए:</b></p><br><p>नीचे दिए गए बटन पर क्लिक करें और व्हाट्सएप पर अपने रोग का नाम लिखें।</p>`;
-                waMsg = "नमस्ते डॉक्टर, मैं इस रोग के लिए ट्रीटमेंट लेना चाहता हूँ: \n- (यहाँ रोग का नाम लिखें) -";
+                    <table class="disease-table">
+                        <tr><th>पुराने रोग</th><th>विवरण</th></tr>
+                        <tr><td>गठिया</td><td>जोड़ों का दर्द</td></tr>
+                        <tr><td>दमा</td><td>साँस की तकलीफ</td></tr>
+                    </table>
+                    <div class="photo-gallery"><div class="photo-placeholder">Case 1</div><div class="photo-placeholder">Case 2</div></div>`;
+                waMsg = "नमस्ते डॉक्टर, पुराने रोगों के इलाज की जानकारी चाहिए।";
             }
             else if (type === 'location') {
-                contentArea.innerHTML = `<p><b>डॉ. पी.सी. क्लिनिक</b><br>हमारा पता 1st फ्लोर वासवानी प्लाजा (समय होटल),
-इंदिरा गांधी चौराहा,
-फ्रीगंज,
-उज्जैन (MP)<br>समय: सुबह 10 से शाम 2 बजे तक।</p>`;
-                waMsg = "नमस्ते डॉक्टर, मुझे क्लिनिक की लोकेशन और मिलने के लिए दिनांक ..... का अपॉइंटमेंट चाहिए।";
+                contentArea.innerHTML = `
+                    <p><b>डॉ. पी.सी. क्लिनिक</b></p>
+                    <p>पता: वासवानी प्लाजा, इंदिरा गांधी चौराहा, फ्रीगंज, उज्जैन </p>
+                    <div class="photo-gallery">
+                        <div class="photo-placeholder">Clinic Front</div>
+                        <div class="photo-placeholder">Location View</div>
+                    </div>`;
+                waMsg = "नमस्ते डॉक्टर, मुझे आपके क्लिनिक की लोकेशन और एड्रेस की जानकारी चाहिए।";
+                mapLink.style.display = 'block';
+                mapLink.href = mapURL;
+            }
+            else if (type === 'reviews') {
+                contentArea.innerHTML = `
+                    <p><b>मरीजों का विश्वास: ⭐⭐⭐⭐⭐</b></p>
+                    <ul class="expert-list">
+                        <li>"पुराने दर्द में जादू जैसा असर!" - पेशेंट</li>
+                    </ul>
+                    <div class="photo-gallery"><div class="photo-placeholder">Review Card 1</div><div class="photo-placeholder">Review Card 2</div></div>`;
+                waMsg = "नमस्ते डॉक्टर, रिव्यु देखने के बाद मैं अपॉइंटमेंट लेना चाहता हूँ।";
+            }
+            else if (type === 'followup') {
+                contentArea.innerHTML = `<p>नमस्ते <b>${pName}</b> जी, फॉलो-अप के लिए मैसेज भेजें।</p>`;
+                waMsg = `नमस्ते डॉक्टर, मैं ${pName} फॉलो-अप अपॉइंटमेंट चाहता हूँ।`;
             }
 
             waLink.href = "https://wa.me/" + waNumber + "?text=" + encodeURIComponent(waMsg);
@@ -217,7 +254,3 @@
     </script>
 </body>
 </html>
-
-
-
-
