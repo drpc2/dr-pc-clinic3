@@ -1,0 +1,8 @@
+json
+{
+  "app_settings": {
+    "show_search_bar": false,
+    "theme_color": "#004d40",
+    "clinic_name": "Dynamic Homeopathy"
+  }
+}
