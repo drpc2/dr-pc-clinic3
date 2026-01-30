@@ -1,8 +1,22 @@
-json
 {
-  "app_settings": {
-    "show_search_bar": false,
-    "theme_color": "#004d40",
-    "clinic_name": "Dynamic Homeopathy"
-  }
+  "short_name": "DrPC Clinic",
+  "name": "Dr. P.C. Rathore Homeopathic Clinic",
+  "description": "Dynamic Homeopathy for Natural Healing",
+  "start_url": "https://drpc2.github.io/dr-pc-clinic3/",
+  "display": "standalone",
+  "theme_color": "#007fa3",
+  "background_color": "#1a5276",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "logo.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "logo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
 }
