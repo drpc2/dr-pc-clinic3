@@ -31,7 +31,7 @@
         .info-box h2 { font-size: 0.85rem; color: #00dbff; }
 
         #details-page { display: none; padding: 15px; padding-bottom: 100px; }
-        .big-box { background: white; color: #333; padding: 20px; border-radius: 20px; text-align: left; margin-top: 15px; margin-bottom: 10px; line-height: 1.6; }
+        .big-box { background: white; color: #333; padding: 20px; border-radius: 20px; text-align: left; margin-top: 15px; margin-bottom: 10px; line-height: 1.6; position: relative; }
         
         .photo-stack { width: 95%; margin: 20px auto; text-align: left; }
         .photo-title { color: #ffcc00; font-size: 0.9rem; font-weight: bold; margin-bottom: 8px; margin-top: 20px; text-transform: uppercase; }
@@ -46,10 +46,33 @@
         .whatsapp-btn { display: block; background: #25D366; color: white; padding: 15px; border-radius: 50px; text-decoration: none; font-weight: bold; margin: 10px auto; width: 100%; }
         .map-btn { display: none; background: #4285F4; color: white; padding: 15px; border-radius: 50px; text-decoration: none; font-weight: bold; margin: 10px auto; width: 100%; }
         
+        /* Custom Popup Styles - UPDATED COLOR AND BUTTONS */
+        #name-popup { 
+            display: none; position: fixed; top:0; left:0; width:100%; height:100%; 
+            background: rgba(0,0,0,0.85); z-index: 3000; align-items: center; justify-content: center; 
+        }
+        .popup-card { background: #e3f2fd; padding: 25px; border-radius: 20px; width: 85%; max-width: 400px; color: #333; text-align: center; border: 2px solid #007fa3; }
+        .popup-input { width: 100%; padding: 12px; margin: 15px 0; border: 1px solid #90caf9; border-radius: 10px; font-size: 1rem; outline: none; }
+        .popup-action-row { display: flex; gap: 10px; justify-content: center; }
+        .popup-btn { background: #1a5276; color: white; border: none; padding: 12px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; flex: 1; }
+        .cancel-btn { background: #cfd8dc; color: #455a64; border: none; padding: 12px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; flex: 1; }
+
         #btnInstall { background: #ffcc00; color: #1a5276; padding: 12px 25px; border-radius: 50px; border: none; font-weight: bold; margin: 20px auto; display: none; }
     </style>
 </head>
 <body oncontextmenu="return false;">
+
+    <div id="name-popup">
+        <div class="popup-card">
+            <h3 style="color:#1a5276;">नमस्ते! 👋</h3>
+            <p>कृपया अपना शुभ नाम लिखें:</p>
+            <input type="text" id="patient-name-input" class="popup-input" placeholder="आपका नाम यहाँ डालें...">
+            <div class="popup-action-row">
+                <button class="cancel-btn" onclick="closeNamePopup()">Cancel</button>
+                <button class="popup-btn" onclick="submitName()">आगे बढ़ें</button>
+            </div>
+        </div>
+    </div>
 
     <div class="app-header">
         <div style="display: flex; align-items: center; gap: 10px;">
@@ -78,7 +101,7 @@
             <div class="info-box" onclick="goToDetails('पुराने रोग', 'chronic')">
                 <div class="icon">⏳</div><h2>पुराने रोग</h2>
             </div>
-            <div class="info-box" onclick="askNameFollowUp()">
+            <div class="info-box" onclick="openNamePopup()">
                 <div class="icon">📝</div><h2>फॉलो-अप</h2>
             </div>
             <div class="info-box" onclick="goToDetails('अपॉइंटमेंट', 'appointment')">
@@ -124,10 +147,24 @@
             window.scrollTo(0,0);
         }
 
-        function askNameFollowUp() {
-            let name = prompt("नमस्ते! कृपया अपना नाम लिखें:");
-            if (name) {
+        function openNamePopup() {
+            document.getElementById('name-popup').style.display = 'flex';
+            document.getElementById('patient-name-input').focus();
+        }
+
+        function closeNamePopup() {
+            document.getElementById('name-popup').style.display = 'none';
+            document.getElementById('patient-name-input').value = "";
+        }
+
+        function submitName() {
+            let name = document.getElementById('patient-name-input').value;
+            if(name.trim() !== "") {
+                document.getElementById('name-popup').style.display = 'none';
                 goToDetails('रजिस्टर्ड पेशेंट', 'followup', name);
+                document.getElementById('patient-name-input').value = "";
+            } else {
+                alert("कृपया अपना नाम लिखें।");
             }
         }
 
@@ -141,7 +178,6 @@
             let waMsg = "नमस्ते डॉक्टर, ";
             let mapBtn = document.getElementById('map-btn');
             
-            // Default Resets
             mapBtn.style.display = 'none';
             document.getElementById('title1').innerText = "PHOTO NO. 1";
             document.getElementById('title2').innerText = "PHOTO NO. 2";
@@ -150,7 +186,11 @@
                 content.innerHTML = "🔍 आधुनिक पैथोलॉजी विश्लेषण<br>🧬 बीमारी की जड़ की पहचान<br>🧪 सटीक होम्योपैथिक चयन";
                 waMsg += "सटीक जांच की जानकारी चाहिए।";
             } else if(type === 'expert') {
-                content.innerHTML = "🎓 <b>BHMS, M.Pharm</b><br>⏳ <b>20+ वर्ष का अनुभव</b><br>🏛️ <b>पूर्व शासकीय सहायक प्राध्यापक</b><br>🏥 <b>पूर्व शासकीय चिकित्सा अधिकारी</b><br>✨ <b>विशेषज्ञ: जटिल एवं पुराने रोग</b>";
+                content.innerHTML = `
+                    <div style="background: #f0fbff; padding: 12px; border-radius: 12px; border-left: 5px solid #007fa3; margin-bottom: 15px; font-style: italic; font-size: 0.85rem; color: #1a5276;">
+                        "हमारा उद्देश्य केवल बीमारी को दबाना नहीं, बल्कि उसे जड़ से मिटाना है। आपकी मुस्कान ही हमारी सफलता है।"
+                    </div>
+                    🎓 <b>BHMS, M.Pharm</b><br>⏳ <b>20+ वर्ष का अनुभव</b><br>🏛️ <b>पूर्व शासकीय सहायक प्राध्यापक</b><br>🏥 <b>पूर्व शासकीय चिकित्सा अधिकारी</b><br>✨ <b>विशेषज्ञ: जटिल एवं पुराने रोग</b>`;
                 waMsg += "आपके अनुभव के बारे में बताएं।";
             } else if(type === 'fees') {
                 content.innerHTML = "💰 परामर्श शुल्क और पूर्ण उपचार कोर्स की जानकारी के लिए कृपया व्हाट्सएप पर संपर्क करें।";
@@ -165,7 +205,7 @@
                 content.innerHTML = "🏢 <b>डॉ. पी.सी. क्लिनिक</b><br>📍 वासवानी प्लाजा, इंदिरा गांधी चौराहा, फ्रीगंज, उज्जैन (म.प्र.)";
                 waMsg += "लोकेशन भेजें।";
                 mapBtn.style.display = 'block';
-                mapBtn.href = "https://goo.gl/maps/YOUR_MAP_LINK"; // अपना लिंक यहाँ डालें
+                mapBtn.href = "https://goo.gl/maps/YOUR_MAP_LINK"; 
             } else if(type === 'reviews') {
                 content.innerHTML = "⭐⭐⭐⭐⭐<br><i>'डॉक्टर साहब का इलाज बहुत प्रभावी है, सालों पुरानी समस्या हल हो गई।'</i>";
                 waMsg += "रिव्यु बहुत अच्छे हैं।";
@@ -183,12 +223,7 @@
             defP = e; 
             document.getElementById('btnInstall').style.display = 'block'; 
         });
-        async function installApp() { 
-            if(defP) { 
-                defP.prompt(); 
-                defP = null; 
-            } 
-        }
+        async function installApp() { if(defP) { defP.prompt(); defP = null; } }
     </script>
 </body>
 </html>
