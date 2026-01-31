@@ -1,0 +1,22 @@
+{
+  "name": "DrPC Clinic - Homeopathic Expert",
+  "short_name": "DrPC",
+  "description": "सटीक जांच और बेहतरीन होम्योपैथिक इलाज",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#1a5276",
+  "theme_color": "#1a5276",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://images.stockcake.com/public/a/9/0/a908c275-7e93-4628-898d-fdde0bd4a8b7_large/leaf-water-droplet-stockcake.jpg",
+      "sizes": "192x192",
+      "type": "image/jpg"
+    },
+    {
+      "src": "https://images.stockcake.com/public/a/9/0/a908c275-7e93-4628-898d-fdde0bd4a8b7_large/leaf-water-droplet-stockcake.jpg",
+      "sizes": "512x512",
+      "type": "image/jpg"
+    }
+  ]
+}
