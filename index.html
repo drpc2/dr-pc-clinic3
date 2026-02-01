@@ -17,12 +17,12 @@
             position: fixed; top: 0; width: 100%; background: rgba(26, 82, 118, 0.98); 
             padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; z-index: 1000;
         }
-        .header-logo { width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid white; }
+        .header-logo { width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid white; object-fit: cover; }
         .home-btn { cursor:pointer; background:#25D366; color:white; padding:6px 15px; border-radius:20px; font-size:0.8rem; font-weight:bold; }
         .news-footer { position: fixed; bottom: 0; width: 100%; background: #1a5276; padding: 8px 0; z-index: 2000; }
         
         .profile-row { display: flex; align-items: center; gap: 15px; background: white; padding: 12px; border-radius: 18px; width: 90%; margin: 15px auto; color: #1a5276; }
-        .profile-img { width: 55px; height: 55px; border-radius: 50%; border: 2px solid #007fa3; }
+        .profile-img { width: 55px; height: 55px; border-radius: 50%; border: 2px solid #007fa3; object-fit: cover; }
         
         .info-container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px; max-width: 500px; margin: 0 auto; }
         .info-box { background: rgba(0,0,0,0.3); border-radius: 18px; cursor: pointer; padding: 15px; display: flex; flex-direction: column; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: 0.2s; }
@@ -30,8 +30,17 @@
         .icon { font-size: 1.6rem; margin-bottom: 5px; }
         .info-box h2 { font-size: 0.85rem; color: #00dbff; }
 
-        #details-page { display: none; padding: 15px; padding-bottom: 100px; }
-        .big-box { background: white; color: #333; padding: 20px; border-radius: 20px; text-align: left; margin-top: 15px; margin-bottom: 10px; line-height: 1.6; position: relative; }
+        #details-page { display: none; padding: 15px; padding-bottom: 100px; position: relative; }
+        
+        /* The Signature Grey Back Button */
+        .back-btn { 
+            position: absolute; top: 10px; right: 15px; 
+            background: #757575; color: white; padding: 6px 15px; 
+            border-radius: 20px; border: none; font-weight: bold; 
+            cursor: pointer; font-size: 0.8rem; z-index: 10;
+        }
+
+        .big-box { background: white; color: #333; padding: 20px; border-radius: 20px; text-align: left; margin-top: 40px; margin-bottom: 10px; line-height: 1.6; position: relative; }
         
         .photo-stack { width: 95%; margin: 20px auto; text-align: left; }
         .photo-title { color: #ffcc00; font-size: 0.9rem; font-weight: bold; margin-bottom: 8px; margin-top: 20px; text-transform: uppercase; }
@@ -42,11 +51,9 @@
             color: #ddd; font-size: 0.8rem; overflow: hidden;
         }
 
-        .back-btn { background: white; color: #1a5276; padding: 8px 20px; border-radius: 25px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; }
-        .whatsapp-btn { display: block; background: #25D366; color: white; padding: 15px; border-radius: 50px; text-decoration: none; font-weight: bold; margin: 10px auto; width: 100%; }
-        .map-btn { display: none; background: #4285F4; color: white; padding: 15px; border-radius: 50px; text-decoration: none; font-weight: bold; margin: 10px auto; width: 100%; }
+        .whatsapp-btn { display: block; background: #25D366; color: white; padding: 15px; border-radius: 50px; text-decoration: none; font-weight: bold; margin: 10px auto; width: 100%; text-align: center; }
+        .map-btn { display: none; background: #4285F4; color: white; padding: 15px; border-radius: 50px; text-decoration: none; font-weight: bold; margin: 10px auto; width: 100%; text-align: center; }
         
-        /* Custom Popup Styles - UPDATED COLOR AND BUTTONS */
         #name-popup { 
             display: none; position: fixed; top:0; left:0; width:100%; height:100%; 
             background: rgba(0,0,0,0.85); z-index: 3000; align-items: center; justify-content: center; 
@@ -69,14 +76,14 @@
             <input type="text" id="patient-name-input" class="popup-input" placeholder="आपका नाम यहाँ डालें...">
             <div class="popup-action-row">
                 <button class="cancel-btn" onclick="closeNamePopup()">Cancel</button>
-                <button class="popup-btn" onclick="submitName()">Enter</button>
+                <button class="popup-btn" onclick="submitName()">आगे बढ़ें</button>
             </div>
         </div>
     </div>
 
     <div class="app-header">
         <div style="display: flex; align-items: center; gap: 10px;">
-            <img src="logo.jpg" class="header-logo">
+            <img src="logo.jpg" class="header-logo" onerror="this.src='https://via.placeholder.com/32'">
             <h3 style="margin:0;">DrPC Clinic</h3>
         </div>
         <div onclick="showMain()" class="home-btn">Home</div>
@@ -84,7 +91,7 @@
 
     <div id="main-page">
         <div class="profile-row">
-            <img src="profileimage.jpg" class="profile-img">
+            <img src="profileimage.jpg" class="profile-img" onerror="this.src='https://via.placeholder.com/55'">
             <div style="text-align:left;"><b>Dr. PC Rathore</b><br><small>Homeopathic Expert</small></div>
         </div>
 
@@ -119,7 +126,7 @@
 
     <div id="details-page">
         <button class="back-btn" onclick="showMain()">← Back</button>
-        <h2 id="det-title" style="color:#00dbff;">Title</h2>
+        <h2 id="det-title" style="color:#00dbff; margin-top:10px;">Title</h2>
         
         <div class="big-box">
             <div id="relatable-content">Details...</div>
@@ -129,9 +136,9 @@
         <a id="wa-link" href="#" target="_blank" class="whatsapp-btn">💬 व्हाट्सएप मैसेज भेजें</a>
 
         <div class="photo-stack">
-            <div class="photo-title" id="title1">PHOTO NO. 1</div>
+            <div class="photo-title" id="title1">CLINIC RECORDS</div>
             <div class="photo-placeholder-full" id="p1">Image Placeholder 1</div>
-            <div class="photo-title" id="title2">PHOTO NO. 2</div>
+            <div class="photo-title" id="title2">PATIENT CARE</div>
             <div class="photo-placeholder-full" id="p2">Image Placeholder 2</div>
         </div>
     </div>
@@ -177,10 +184,7 @@
             let content = document.getElementById('relatable-content');
             let waMsg = "नमस्ते डॉक्टर, ";
             let mapBtn = document.getElementById('map-btn');
-            
             mapBtn.style.display = 'none';
-            document.getElementById('title1').innerText = "PHOTO NO. 1";
-            document.getElementById('title2').innerText = "PHOTO NO. 2";
 
             if(type === 'diagnosis') {
                 content.innerHTML = "🔍 आधुनिक पैथोलॉजी विश्लेषण<br>🧬 बीमारी की जड़ की पहचान<br>🧪 सटीक होम्योपैथिक चयन";
@@ -196,8 +200,15 @@
                 content.innerHTML = "💰 परामर्श शुल्क और पूर्ण उपचार कोर्स की जानकारी के लिए कृपया व्हाट्सएप पर संपर्क करें।";
                 waMsg += "फीस की जानकारी चाहिए।";
             } else if(type === 'chronic') {
-                content.innerHTML = "🦴 गठिया एवं जोड़ों का दर्द<br>🫁 दमा एवं एलर्जी<br>💎 किडनी स्टोन<br>🩹 चर्म रोग (Skin Diseases)";
-                waMsg += "पुराने रोगों के इलाज की जानकारी चाहिए।";
+                content.innerHTML = `
+                    <div style="background: #f0fbff; padding: 10px; border-radius: 12px; border-left: 5px solid #007fa3; margin-bottom: 12px; font-style: italic; font-size: 0.85rem; color: #1a5276;">
+                        "जटिल से जटिल रोगों का समाधान, जब बीमारी अपनी जगह बदले या पुरानी हो जाए।"
+                    </div>
+                    🦴 <b>गठिया एवं जोड़ों का दर्द:</b> यूरिक एसिड और जकड़न का उपचार।<br>
+                    🫁 <b>दमा एवं गले के रोग:</b> टॉन्सिल, खराश और सांस की समस्या।<br>
+                    🧠 <b>पुराना सिरदर्द (Migraine):</b> आँखों के ऊपर दर्द और आधे सिर का दर्द।<br>
+                    🩹 <b>चर्म रोग:</b> सोरायसिस, एक्जिमा और पुराने घाव।`;
+                waMsg += "पुराने और जटिल रोगों के इलाज की जानकारी चाहिए।";
             } else if(type === 'appointment') {
                 content.innerHTML = "📱 ऑनलाइन परामर्श उपलब्ध<br>🏥 क्लिनिक विजिट (फ्रीगंज, उज्जैन)<br>⏰ समय के लिए मैसेज करें।";
                 waMsg += "अपॉइंटमेंट चाहिए।";
@@ -219,11 +230,11 @@
 
         let defP;
         window.addEventListener('beforeinstallprompt', (e) => { 
-            e.preventDefault(); 
-            defP = e; 
+            e.preventDefault(); defP = e; 
             document.getElementById('btnInstall').style.display = 'block'; 
         });
         async function installApp() { if(defP) { defP.prompt(); defP = null; } }
     </script>
 </body>
 </html>
+```
