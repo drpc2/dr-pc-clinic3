@@ -63,8 +63,8 @@
 
         #btnInstall { background: #ffcc00; color: #1a5276; padding: 12px 25px; border-radius: 50px; border: none; font-weight: bold; margin: 20px auto; display: none; }
         
-        /* Options Style Update */
-        .opt-btn { padding: 8px 15px; border: 1.5px solid #007fa3; border-radius: 20px; background: white; color: #007fa3; font-weight: bold; cursor: pointer; margin-right: 5px; margin-bottom: 5px; }
+        .opt-btn { padding: 10px 15px; border: 1.5px solid #007fa3; border-radius: 20px; background: white; color: #007fa3; font-weight: bold; cursor: pointer; margin-right: 5px; margin-bottom: 8px; font-size: 0.9rem; transition: 0.2s; }
+        .opt-btn:active { background: #007fa3; color: white; }
         .next-step-btn { width: 100%; background: #007fa3; color: white; border: none; padding: 12px; border-radius: 10px; font-weight: bold; margin-top: 10px; cursor: pointer; }
     </style>
 </head>
@@ -149,15 +149,18 @@
     </div>
 
     <script>
-        // --- WHATSAPP NUMBER SETTING ---
         const MY_PHONE = "917587522844"; 
+        const CLINIC_LOCATION = "https://www.google.com/maps/search/?api=1&query=5QGQ%2BXM+Ujjain%2C+Madhya+Pradesh";
 
         const questions = [
             { id: "name", text: "👤 मरीज का पूरा नाम क्या है?", type: "text" },
             { id: "age", text: "🎂 मरीज की उम्र (Age) क्या है?", type: "text" },
             { id: "complaint", text: "📝 तकलीफ (Chief Complaint) क्या है?", type: "text" },
-            { id: "when", text: "💧 तकलीफ कब से है?", type: "options", choices: ["3 माह से", "6माह से", "1 वर्ष से", "3 वर्ष या अधिक"] },
-            { id: "Test Report", text: "🌡️ क्या आपके पास पुरानी जांच रिपोर्ट है?", type: "options", choices: ["Blood", "LFT/RFT", "USG", "CT Scan", "MRI", "ECG", "EEG"] }
+            { id: "duration", text: "⏳ यह तकलीफ आपको कब से है?", type: "options", choices: ["1 माह", "3 माह", "6 माह", "1 वर्ष", "1 वर्ष से अधिक"] },
+            { id: "reports", text: "📄 क्या आपके पास पुरानी जांच रिपोर्ट है?", type: "options", choices: ["Blood", "LFT/RFT", "USG", "CT-Scan", "MRI", "ECG", "EEG", "नहीं है"] },
+            { id: "mode", text: "🏥 आप कौन सा ट्रीटमेंट लेना चाहते हैं?", type: "options", choices: ["Offline (क्लिनिक पर)", "Online (व्हाट्सएप/कॉल)"] },
+            { id: "date", text: "📅 अपॉइंटमेंट के लिए तारीख चुनें:", type: "options", choices: ["आज (Today)", "कल (Tomorrow)", "अन्य दिनांक"] },
+            { id: "time", text: "⏰ उचित समय चुनें:", type: "dynamic-options" }
         ];
 
         let currentStep = 0;
@@ -201,13 +204,31 @@
                 </div>
             `;
 
-            if(q.type === 'options') {
+            let choices = q.choices || [];
+            
+            if(q.type === 'dynamic-options' && q.id === 'time') {
+                if(responses.mode.includes("Offline")) {
+                    choices = ["Morning (11am-2pm)", "Evening (5pm-7pm)"];
+                } else {
+                    choices = ["Morning (8am-10am)", "Evening (8pm-10pm)"];
+                }
+            }
+
+            if(q.type.includes('options')) {
                 const optBox = document.getElementById('engine-opts');
-                q.choices.forEach(choice => {
+                choices.forEach(choice => {
                     const btn = document.createElement('button');
                     btn.className = "opt-btn";
                     btn.innerText = choice;
-                    btn.onclick = () => { responses[q.id] = choice; processNextStep(); };
+                    btn.onclick = () => { 
+                        if(choice === "अन्य दिनांक") {
+                            const d = prompt("कृपया दिनांक लिखें (जैसे: 25 Feb):");
+                            responses[q.id] = d ? d : "अगले कुछ दिन";
+                        } else {
+                            responses[q.id] = choice; 
+                        }
+                        processNextStep(); 
+                    };
                     optBox.appendChild(btn);
                 });
             }
@@ -224,8 +245,18 @@
             if(currentStep < questions.length) {
                 renderSmartQuestion();
             } else {
-                let waFinalMsg = encodeURIComponent(`*नया अपॉइंटमेंट फॉर्म*\n*नाम:* ${responses.name}\n*उम्र:* ${responses.age}\n*शिकायत:* ${responses.complaint}\n*प्यास:* ${responses.thirst}\n*तापमान:* ${responses.thermal}`);
-                // Universal WhatsApp Link FIX
+                let waFinalMsg = encodeURIComponent(
+                    `*नया अपॉइंटमेंट फॉर्म*\n` +
+                    `--------------------------\n` +
+                    `*नाम:* ${responses.name}\n` +
+                    `*उम्र:* ${responses.age}\n` +
+                    `*शिकायत:* ${responses.complaint}\n` +
+                    `*अवधि:* ${responses.duration}\n` +
+                    `*रिपोर्ट:* ${responses.reports}\n` +
+                    `*ट्रीटमेंट:* ${responses.mode}\n` +
+                    `*दिनांक:* ${responses.date}\n` +
+                    `*समय:* ${responses.time}`
+                );
                 window.location.href = "https://api.whatsapp.com/send?phone=" + MY_PHONE + "&text=" + waFinalMsg;
                 document.getElementById('relatable-content').innerHTML = "<h3 style='color:#25D366; text-align:center;'>✅ धन्यवाद! व्हाट्सएप खुल रहा है...</h3>";
             }
@@ -264,7 +295,7 @@
                 p1.innerHTML = `<img src="https://img.freepik.com/premium-photo/edicine-doctor-stethoscope-using-tablet-with-icon-medical-network-connection-virtual-modern-medical_71455-930.jpg">`;
                 p2.innerHTML = `<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROexmLm01U-ZgLfFVh-QFlsAzEwaEDcES9wuP8MuA27CTKjeFqBfrVsx02&s=10">`;
             } else if(type === 'expert') {
-                content.innerHTML = `<div style="background: #f0fbff; padding: 12px; border-radius: 12px; border-left: 5px solid #007fa3; margin-bottom: 15px; font-style: italic; font-size: 0.85rem; color: #1a5276;">"हमारा उद्देश्य केवल बीमारी को दबाना नहीं, बल्कि उसे जड़ से मिटाना है।"</div>🎓 <b>BHMS, M.Pharm</b><br>⏳ <b>20+ वर्ष का अनुभव</b><br>✨ <b>विशेषज्ञ: पुराने रोग</b>`;
+                content.innerHTML = `<div style="background: #f0fbff; padding: 12px; border-radius: 12px; border-left: 5px solid #007fa3; margin-bottom: 15px; font-style: italic; font-size: 0.85rem; color: #1a5276;">"हमारा उद्देश्य केवल बीमारी को दबाना नहीं, बल्कि उसे जड़ से मिटाना है।"</div>🎓 <b>BHMS, M.Pharm</b><br>⏳ <b>20+ वर्ष का अनुभव</b><br>✨ <b>विशेषज्ञ: जटिल एवं पुराने रोग</b><br>🏥 <b>पूर्व शासकीय चिकित्सा अधिकारी</b>`;
                 waMsg += "आपके अनुभव के बारे में बताएं।";
                 p2.innerHTML = `<img src="https://c02.purpledshub.com/uploads/sites/86/2025/02/BILD_HIGHRES-210-scaled.jpeg">`;
                 p1.innerHTML = `<img src="https://www.guideir.com/Public/Uploads/uploadfile/images/20220609/16MedicalDiagnosis2.jpg">`;
@@ -279,10 +310,10 @@
                 p2.innerHTML = `<img src="https://pbs.twimg.com/media/DLHPZUBW0AEwCCe.jpg">`;
                 p1.innerHTML = `<img src="https://heilkunsthomoeopathy.com/wp-content/uploads/2024/08/Benefits-Of-Homeopathy.jpg">`;
             } else if(type === 'location') {
-                content.innerHTML = "🏢 <b>डॉ. पी.सी. क्लिनिक</b><br>📍 फ्रीगंज, उज्जैन (म.प्र.)";
+                content.innerHTML = "🏢 <b>डॉ. पी.सी. क्लिनिक</b><br>📍 फ्रीगंज, उज्जैन (म.प्र.)<br><small>Location Code: 5QGQ+XM</small>";
                 waMsg += "लोकेशन भेजें।";
                 mapBtn.style.display = 'block';
-                mapBtn.href = "https://goo.gl/maps/YOUR_MAP_LINK"; 
+                mapBtn.href = CLINIC_LOCATION; 
                 p1.innerHTML = `<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRURF3UqNTnqS4lx4pZ5SNPN8UoVftB5mo5_ZsEWt1IOKLaGgFtyHFV9gw&s=10">`;
                 p2.innerHTML = `<img src="https://picsum.photos/id/351/600/400">`;
             } else if(type === 'reviews') {
