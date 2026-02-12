@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DrPC - Professional Secure App</title>
     <link rel="manifest" href="manifest.json">
-    
     <style>
         * { -webkit-user-select: none; user-select: none; box-sizing: border-box; margin: 0; padding: 0; }
         body { 
@@ -17,12 +16,12 @@
             position: fixed; top: 0; width: 100%; background: rgba(26, 82, 118, 0.98); 
             padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; z-index: 1000;
         }
-        .header-logo { width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid white; object-fit: cover; }
+        .header-logo { width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid white; }
         .home-btn { cursor:pointer; background:#25D366; color:white; padding:6px 15px; border-radius:20px; font-size:0.8rem; font-weight:bold; }
         .news-footer { position: fixed; bottom: 0; width: 100%; background: #1a5276; padding: 8px 0; z-index: 2000; }
         
         .profile-row { display: flex; align-items: center; gap: 15px; background: white; padding: 12px; border-radius: 18px; width: 90%; margin: 15px auto; color: #1a5276; }
-        .profile-img { width: 55px; height: 55px; border-radius: 50%; border: 2px solid #007fa3; object-fit: cover; }
+        .profile-img { width: 55px; height: 55px; border-radius: 50%; border: 2px solid #007fa3; }
         
         .info-container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px; max-width: 500px; margin: 0 auto; }
         .info-box { background: rgba(0,0,0,0.3); border-radius: 18px; cursor: pointer; padding: 15px; display: flex; flex-direction: column; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: 0.2s; }
@@ -31,24 +30,22 @@
         .info-box h2 { font-size: 0.85rem; color: #00dbff; }
 
         #details-page { display: none; padding: 15px; padding-bottom: 100px; position: relative; }
-        
-        /* The Signature Grey Back Button */
-        .back-btn { 
-            position: absolute; top: 10px; right: 15px; 
-            background: #757575; color: white; padding: 6px 15px; 
-            border-radius: 20px; border: none; font-weight: bold; 
-            cursor: pointer; font-size: 0.8rem; z-index: 10;
-        }
-
-        .big-box { background: white; color: #333; padding: 20px; border-radius: 20px; text-align: left; margin-top: 40px; margin-bottom: 10px; line-height: 1.6; position: relative; }
+        .big-box { background: white; color: #333; padding: 20px; border-radius: 20px; text-align: left; margin-top: 15px; margin-bottom: 10px; line-height: 1.6; position: relative; }
         
         .photo-stack { width: 95%; margin: 20px auto; text-align: left; }
         .photo-title { color: #ffcc00; font-size: 0.9rem; font-weight: bold; margin-bottom: 8px; margin-top: 20px; text-transform: uppercase; }
         .photo-placeholder-full { 
-            background: rgba(255,255,255,0.1); width: 100%; min-height: 200px; 
+            background: rgba(255,255,255,0.1); width: 100%; min-height: 220px; 
             border-radius: 15px; border: 2px dashed rgba(255,255,255,0.3); 
             display: flex; align-items: center; justify-content: center; 
             color: #ddd; font-size: 0.8rem; overflow: hidden;
+        }
+        .photo-placeholder-full img { width: 100%; height: 100%; object-fit: cover; }
+
+        .back-btn { 
+            background: #bdc3c7; color: #333; padding: 6px 15px; border-radius: 15px; 
+            border: none; font-weight: bold; cursor: pointer;
+            position: absolute; right: 15px; top: 15px; font-size: 0.8rem; z-index: 10;
         }
 
         .whatsapp-btn { display: block; background: #25D366; color: white; padding: 15px; border-radius: 50px; text-decoration: none; font-weight: bold; margin: 10px auto; width: 100%; text-align: center; }
@@ -65,6 +62,10 @@
         .cancel-btn { background: #cfd8dc; color: #455a64; border: none; padding: 12px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; flex: 1; }
 
         #btnInstall { background: #ffcc00; color: #1a5276; padding: 12px 25px; border-radius: 50px; border: none; font-weight: bold; margin: 20px auto; display: none; }
+        
+        /* Options Style Update */
+        .opt-btn { padding: 8px 15px; border: 1.5px solid #007fa3; border-radius: 20px; background: white; color: #007fa3; font-weight: bold; cursor: pointer; margin-right: 5px; margin-bottom: 5px; }
+        .next-step-btn { width: 100%; background: #007fa3; color: white; border: none; padding: 12px; border-radius: 10px; font-weight: bold; margin-top: 10px; cursor: pointer; }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -125,8 +126,8 @@
     </div>
 
     <div id="details-page">
-        <button class="back-btn" onclick="showMain()">← Back</button>
-        <h2 id="det-title" style="color:#00dbff; margin-top:10px;">Title</h2>
+        <button class="back-btn" onclick="showMain()">Back</button>
+        <h2 id="det-title" style="color:#00dbff; text-align: left; padding-left: 5px; margin-top: 10px;">Title</h2>
         
         <div class="big-box">
             <div id="relatable-content">Details...</div>
@@ -136,9 +137,9 @@
         <a id="wa-link" href="#" target="_blank" class="whatsapp-btn">💬 व्हाट्सएप मैसेज भेजें</a>
 
         <div class="photo-stack">
-            <div class="photo-title" id="title1">CLINIC RECORDS</div>
+            <div class="photo-title" id="title1">PHOTO NO. 1</div>
             <div class="photo-placeholder-full" id="p1">Image Placeholder 1</div>
-            <div class="photo-title" id="title2">PATIENT CARE</div>
+            <div class="photo-title" id="title2">PHOTO NO. 2</div>
             <div class="photo-placeholder-full" id="p2">Image Placeholder 2</div>
         </div>
     </div>
@@ -148,6 +149,20 @@
     </div>
 
     <script>
+        // --- WHATSAPP NUMBER SETTING ---
+        const MY_PHONE = "917587522844"; 
+
+        const questions = [
+            { id: "name", text: "👤 मरीज का पूरा नाम क्या है?", type: "text" },
+            { id: "age", text: "🎂 मरीज की उम्र (Age) क्या है?", type: "text" },
+            { id: "complaint", text: "📝 तकलीफ (Chief Complaint) क्या है?", type: "text" },
+            { id: "thirst", text: "💧 प्यास कैसी लगती है?", type: "options", choices: ["कम", "सामान्य", "ज्यादा", "घूँट-घूँट"] },
+            { id: "thermal", text: "🌡️ ज्यादा क्या महसूस होता है?", type: "options", choices: ["गर्मी (Hot)", "सर्दी (Chilly)", "दोनों"] }
+        ];
+
+        let currentStep = 0;
+        let responses = {};
+
         function showMain() {
             document.getElementById('main-page').style.display = 'block';
             document.getElementById('details-page').style.display = 'none';
@@ -170,8 +185,49 @@
                 document.getElementById('name-popup').style.display = 'none';
                 goToDetails('रजिस्टर्ड पेशेंट', 'followup', name);
                 document.getElementById('patient-name-input').value = "";
+            } else { alert("कृपया अपना नाम लिखें।"); }
+        }
+
+        function renderSmartQuestion() {
+            const q = questions[currentStep];
+            const content = document.getElementById('relatable-content');
+            
+            content.innerHTML = `
+                <div id="smart-form-engine">
+                    <p style="font-weight:bold; color:#1a5276; margin-bottom:12px; font-size:1.1rem;">${q.text}</p>
+                    ${q.type === 'text' ? `<input type="text" id="engine-input" style="width:100%; padding:12px; border:1px solid #ccc; border-radius:10px; margin-bottom:12px; font-size:1rem;" placeholder="यहाँ लिखें...">` : ''}
+                    <div id="engine-opts" style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px;"></div>
+                    <button onclick="processNextStep()" class="next-step-btn">अगला सवाल ➔</button>
+                </div>
+            `;
+
+            if(q.type === 'options') {
+                const optBox = document.getElementById('engine-opts');
+                q.choices.forEach(choice => {
+                    const btn = document.createElement('button');
+                    btn.className = "opt-btn";
+                    btn.innerText = choice;
+                    btn.onclick = () => { responses[q.id] = choice; processNextStep(); };
+                    optBox.appendChild(btn);
+                });
+            }
+        }
+
+        function processNextStep() {
+            const q = questions[currentStep];
+            if(q.type === 'text') {
+                const val = document.getElementById('engine-input').value;
+                if(!val) { alert("कृपया जानकारी भरें।"); return; }
+                responses[q.id] = val;
+            }
+            currentStep++;
+            if(currentStep < questions.length) {
+                renderSmartQuestion();
             } else {
-                alert("कृपया अपना नाम लिखें।");
+                let waFinalMsg = encodeURIComponent(`*नया अपॉइंटमेंट फॉर्म*\n*नाम:* ${responses.name}\n*उम्र:* ${responses.age}\n*शिकायत:* ${responses.complaint}\n*प्यास:* ${responses.thirst}\n*तापमान:* ${responses.thermal}`);
+                // Universal WhatsApp Link FIX
+                window.location.href = "https://api.whatsapp.com/send?phone=" + MY_PHONE + "&text=" + waFinalMsg;
+                document.getElementById('relatable-content').innerHTML = "<h3 style='color:#25D366; text-align:center;'>✅ धन्यवाद! व्हाट्सएप खुल रहा है...</h3>";
             }
         }
 
@@ -182,50 +238,65 @@
             window.scrollTo(0,0);
             
             let content = document.getElementById('relatable-content');
-            let waMsg = "नमस्ते डॉक्टर, ";
+            let waBtn = document.getElementById('wa-link');
             let mapBtn = document.getElementById('map-btn');
+            let p1 = document.getElementById('p1');
+            let p2 = document.getElementById('p2');
+            
             mapBtn.style.display = 'none';
+            waBtn.style.display = 'block';
+            document.getElementById('title1').innerText = "VISUAL ANALYSIS";
+            document.getElementById('title2').innerText = "CLINIC VIEW";
 
+            if(type === 'appointment') {
+                currentStep = 0; responses = {};
+                renderSmartQuestion();
+                waBtn.style.display = 'none';
+                p1.innerHTML = `<img src="https://on.bluecross.ca/dam/jcr:8a250c10-3952-4268-9503-2d467325fe5e/84707845.jpg">`;
+                p2.innerHTML = `<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSoUx3_BJy0x1KQfTfbJGHmeYy6ZHQIBeAIuKFJZ5GV3gzwUzYPGVvfUJg-&s=10">`;
+                return;
+            }
+
+            let waMsg = "नमस्ते डॉक्टर, ";
             if(type === 'diagnosis') {
                 content.innerHTML = "🔍 आधुनिक पैथोलॉजी विश्लेषण<br>🧬 बीमारी की जड़ की पहचान<br>🧪 सटीक होम्योपैथिक चयन";
                 waMsg += "सटीक जांच की जानकारी चाहिए।";
+                p1.innerHTML = `<img src="https://img.freepik.com/premium-photo/edicine-doctor-stethoscope-using-tablet-with-icon-medical-network-connection-virtual-modern-medical_71455-930.jpg">`;
+                p2.innerHTML = `<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROexmLm01U-ZgLfFVh-QFlsAzEwaEDcES9wuP8MuA27CTKjeFqBfrVsx02&s=10">`;
             } else if(type === 'expert') {
-                content.innerHTML = `
-                    <div style="background: #f0fbff; padding: 12px; border-radius: 12px; border-left: 5px solid #007fa3; margin-bottom: 15px; font-style: italic; font-size: 0.85rem; color: #1a5276;">
-                        "हमारा उद्देश्य केवल बीमारी को दबाना नहीं, बल्कि उसे जड़ से मिटाना है। आपकी मुस्कान ही हमारी सफलता है।"
-                    </div>
-                    🎓 <b>BHMS, M.Pharm</b><br>⏳ <b>20+ वर्ष का अनुभव</b><br>🏛️ <b>पूर्व शासकीय सहायक प्राध्यापक</b><br>🏥 <b>पूर्व शासकीय चिकित्सा अधिकारी</b><br>✨ <b>विशेषज्ञ: जटिल एवं पुराने रोग</b>`;
+                content.innerHTML = `<div style="background: #f0fbff; padding: 12px; border-radius: 12px; border-left: 5px solid #007fa3; margin-bottom: 15px; font-style: italic; font-size: 0.85rem; color: #1a5276;">"हमारा उद्देश्य केवल बीमारी को दबाना नहीं, बल्कि उसे जड़ से मिटाना है।"</div>🎓 <b>BHMS, M.Pharm</b><br>⏳ <b>20+ वर्ष का अनुभव</b><br>✨ <b>विशेषज्ञ: पुराने रोग</b>`;
                 waMsg += "आपके अनुभव के बारे में बताएं।";
+                p2.innerHTML = `<img src="https://c02.purpledshub.com/uploads/sites/86/2025/02/BILD_HIGHRES-210-scaled.jpeg">`;
+                p1.innerHTML = `<img src="https://www.guideir.com/Public/Uploads/uploadfile/images/20220609/16MedicalDiagnosis2.jpg">`;
             } else if(type === 'fees') {
-                content.innerHTML = "💰 परामर्श शुल्क और पूर्ण उपचार कोर्स की जानकारी के लिए कृपया व्हाट्सएप पर संपर्क करें।";
+                content.innerHTML = "💰 परामर्श शुल्क की जानकारी के लिए व्हाट्सएप पर संपर्क करें।";
                 waMsg += "फीस की जानकारी चाहिए।";
+                p2.innerHTML = `<img src="https://media.post.rvohealth.io/wp-content/uploads/2020/04/8252-Therapy_for_Every_Budget-800x1200-Pinterest-800x1200.jpg">`;
+                p1.innerHTML = `<img src="https://planergy.com/wp-content/uploads/2021/04/628-FE1.jpg">`;
             } else if(type === 'chronic') {
-                content.innerHTML = `
-                    <div style="background: #f0fbff; padding: 10px; border-radius: 12px; border-left: 5px solid #007fa3; margin-bottom: 12px; font-style: italic; font-size: 0.85rem; color: #1a5276;">
-                        "जटिल से जटिल रोगों का समाधान, जब बीमारी अपनी जगह बदले या पुरानी हो जाए।"
-                    </div>
-                    🦴 <b>गठिया एवं जोड़ों का दर्द:</b> यूरिक एसिड और जकड़न का उपचार।<br>
-                    🫁 <b>दमा एवं गले के रोग:</b> टॉन्सिल, खराश और सांस की समस्या।<br>
-                    🧠 <b>पुराना सिरदर्द (Migraine):</b> आँखों के ऊपर दर्द और आधे सिर का दर्द।<br>
-                    🩹 <b>चर्म रोग:</b> सोरायसिस, एक्जिमा और पुराने घाव।`;
-                waMsg += "पुराने और जटिल रोगों के इलाज की जानकारी चाहिए।";
-            } else if(type === 'appointment') {
-                content.innerHTML = "📱 ऑनलाइन परामर्श उपलब्ध<br>🏥 क्लिनिक विजिट (फ्रीगंज, उज्जैन)<br>⏰ समय के लिए मैसेज करें।";
-                waMsg += "अपॉइंटमेंट चाहिए।";
+                content.innerHTML = "🦴 गठिया एवं जोड़ों का दर्द<br>🫁 दमा एवं एलर्जी<br>🩹 चर्म रोग (Skin Diseases)";
+                waMsg += "पुराने रोगों के इलाज की जानकारी चाहिए।";
+                p2.innerHTML = `<img src="https://pbs.twimg.com/media/DLHPZUBW0AEwCCe.jpg">`;
+                p1.innerHTML = `<img src="https://heilkunsthomoeopathy.com/wp-content/uploads/2024/08/Benefits-Of-Homeopathy.jpg">`;
             } else if(type === 'location') {
-                content.innerHTML = "🏢 <b>डॉ. पी.सी. क्लिनिक</b><br>📍 वासवानी प्लाजा, इंदिरा गांधी चौराहा, फ्रीगंज, उज्जैन (म.प्र.)";
+                content.innerHTML = "🏢 <b>डॉ. पी.सी. क्लिनिक</b><br>📍 फ्रीगंज, उज्जैन (म.प्र.)";
                 waMsg += "लोकेशन भेजें।";
                 mapBtn.style.display = 'block';
                 mapBtn.href = "https://goo.gl/maps/YOUR_MAP_LINK"; 
+                p1.innerHTML = `<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRURF3UqNTnqS4lx4pZ5SNPN8UoVftB5mo5_ZsEWt1IOKLaGgFtyHFV9gw&s=10">`;
+                p2.innerHTML = `<img src="https://picsum.photos/id/351/600/400">`;
             } else if(type === 'reviews') {
-                content.innerHTML = "⭐⭐⭐⭐⭐<br><i>'डॉक्टर साहब का इलाज बहुत प्रभावी है, सालों पुरानी समस्या हल हो गई।'</i>";
+                content.innerHTML = "⭐⭐⭐⭐⭐<br><i>'डॉक्टर साहब का इलाज बहुत प्रभावी है।'</i>";
                 waMsg += "रिव्यु बहुत अच्छे हैं।";
+                p1.innerHTML = `<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSiwYLE-Tex1zTrw0JG3rgEyv-nTqPnb7tgPR90ATS2bzprRNtvfhOmg0&s=10">`;
+                p2.innerHTML = `<img src="https://www.onlinehomeopathicdoctor.com/wp-content/uploads/2025/08/infographics-10-benefits-of-homeopathic-medicine.png">`;
             } else if(type === 'followup') {
-                content.innerHTML = "नमस्ते <b>" + pName + "</b> जी,<br>अपने फॉलो-अप के लिए नीचे दिए बटन से संपर्क करें।";
+                content.innerHTML = "नमस्ते <b>" + pName + "</b> जी,<br>फॉलो-अप के लिए संपर्क करें।";
                 waMsg += "मैं " + pName + " फॉलो-अप के लिए संपर्क कर रहा हूँ।";
+                p2.innerHTML = `<img src="https://assets.clevelandclinic.org/transform/LargeFeatureImage/684d001c-12bd-48f5-bcba-2dbf7b4ded9b/drops-of-tincture-into-mug-1648177590">`;
+                p1.innerHTML = `<img src="https://cancerhomoeoclinic.co.in/wp-content/uploads/2025/09/What-is-Homeopathy-How-It-Works-768x512.png">`;
             }
-            
-            document.getElementById('wa-link').href = "https://wa.me/917587522844?text=" + encodeURIComponent(waMsg);
+            waBtn.href = "https://api.whatsapp.com/send?phone=" + MY_PHONE + "&text=" + encodeURIComponent(waMsg);
         }
 
         let defP;
